@@ -1,8 +1,13 @@
 <template>
   <div>
     <BackButton />
-    <BrandHeader/>
-    <p>Smoothies for all Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laudantium ut quod distinctio id amet, voluptate odit? Quae ratione exercitationem nemo inventore voluptatum dicta quam dolorem dolor eveniet delectus. Eius.</p>
+    <BrandHeader />
+    <p>
+      Smoothies for all Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      Neque laudantium ut quod distinctio id amet, voluptate odit? Quae ratione
+      exercitationem nemo inventore voluptatum dicta quam dolorem dolor eveniet
+      delectus. Eius.
+    </p>
   </div>
 </template>
 
@@ -14,13 +19,9 @@ export default {
   name: "Smoothies",
   components: {
     BrandHeader,
-    BackButton
-  }
+    BackButton,
+  },
 };
 </script>
 
-<style lang="scss">
-
-
-
-</style>
+<style lang="scss"></style>

@@ -40,9 +40,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/_variables.scss";
 form {
   margin: auto;
-  background:$base-color;
+  background: $base-color;
 }
 </style>

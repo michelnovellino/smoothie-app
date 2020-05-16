@@ -1,27 +1,32 @@
 <template>
-  <div >
-    <section class="container">
+  <div class="container">
+    <section class="row">
       <BrandHeader />
     </section>
 
-    <section class="container info">
-      <p>
+    <section class="row">
+      <p class="info mx-auto">
         Smoothie Match was designed by smoothie specialist to find the perfect
         flavor to match mood and more.
       </p>
     </section>
-    <section class="container">
-      <button class="button button--createSmothie">
-        <router-link to="/new-smoothie">
-          Create your own smoothie
-        </router-link>
-      </button>
-
-      <button class="button button--listSmothies">
-        <router-link to="/smoothies">
-          Take me to the smotthies!
-        </router-link>
-      </button>
+    <section class="row mt-5">
+      <div class="column text-center">
+        <button class="button button-large my-3">
+          <router-link to="/new-smoothie">
+            Customize your smoothie
+          </router-link>
+        </button>
+      </div>
+    </section>
+    <section class="row mt-5">
+      <div class="column text-center">
+        <button class="button button-large my-3">
+          <router-link to="/smoothies">
+            Take me to the smotthies!
+          </router-link>
+        </button>
+      </div>
     </section>
   </div>
 </template>
@@ -33,16 +38,7 @@ import BrandHeader from "@/components/BrandHeader.vue";
 export default {
   name: "Home",
   components: {
-    BrandHeader
-  }
+    BrandHeader,
+  },
 };
 </script>
-
-<style lang="scss">
-.info {
-  background-color: #c0ffb3;
-  font-weight: 600;
-  padding: 5px;
-  border-radius: 15px;
-}
-</style>
