@@ -27,7 +27,11 @@
         <label for="smoothie-taste">Taste:</label>
         <input type="number" name="smoothie-taste" id="smoothie-taste" />
 
-        <input type="submit" value="Save it!" />
+        <input
+          class="button button-large submit mx-auto"
+          type="submit"
+          value="Save it!"
+        />
       </form>
     </div>
   </div>
@@ -42,6 +46,12 @@ export default {
 <style lang="scss">
 form {
   margin: auto;
-  background: $base-color;
+  padding: 2rem;
+  border-radius: 0.8rem;
+  background: $white;
+  .submit {
+    background: $dark-color;
+    width: 100%;
+  }
 }
 </style>
