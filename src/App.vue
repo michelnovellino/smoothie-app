@@ -16,21 +16,7 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
-/*Fonts*/
-@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;600&display=swap");
-$title-font: "Pacifico", sans-serif;
-$content-font: "Prompt", sans-serif;
-
-/*Color Palette*/
-$base-color: #52de97;
-$second-color: #3c9d9b;
-$third-color: #ffd369;
-$fourth-color: #e43f5a;
-$dark-color: #5b5656;
-$light-color: #c0ffb3;
-$black: #4d4646;
-$white: #f7f7f7;
+@import "@/assets/scss/_variables.scss";
 
 #app {
   font-family: $content-font;
@@ -41,7 +27,7 @@ $white: #f7f7f7;
   max-width: 80vw;
 }
 
-.title{
+.title {
   font-family: $title-font;
   font-weight: 400;
   font-size: 2em;
@@ -49,7 +35,7 @@ $white: #f7f7f7;
   border: none;
 }
 
-.button{
+.button {
   width: 80vw;
   padding: 1em 2em;
   border-radius: 10px;
@@ -61,15 +47,10 @@ $white: #f7f7f7;
   border: 4px solid $light-color;
   background-color: $dark-color;
 
-  &--back{
+  &--back {
     width: 4vw;
     padding: 1em 1em;
     margin: 1em 0 0 -2em;
   }
 }
-
-.container{
-  margin: 3em auto;
-}
-
 </style>

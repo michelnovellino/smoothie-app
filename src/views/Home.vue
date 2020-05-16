@@ -1,24 +1,25 @@
 <template>
-  <div>
+  <div >
     <section class="container">
       <BrandHeader />
     </section>
-    
+
     <section class="container info">
-      <p>Smoothie Match was designed by smoothie specialist to find the perfect flavor to match mood and more.</p>  
+      <p>
+        Smoothie Match was designed by smoothie specialist to find the perfect
+        flavor to match mood and more.
+      </p>
     </section>
     <section class="container">
       <button class="button button--createSmothie">
-        <router-link 
-          to="/new-smoothie">
-            Create your own smoothie
+        <router-link to="/new-smoothie">
+          Create your own smoothie
         </router-link>
       </button>
 
       <button class="button button--listSmothies">
-        <router-link 
-          to="/smoothies">
-            Take me to the smotthies!
+        <router-link to="/smoothies">
+          Take me to the smotthies!
         </router-link>
       </button>
     </section>
@@ -38,12 +39,10 @@ export default {
 </script>
 
 <style lang="scss">
-.info{
+.info {
   background-color: #c0ffb3;
   font-weight: 600;
   padding: 5px;
   border-radius: 15px;
 }
-
-
 </style>
