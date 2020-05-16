@@ -3,8 +3,24 @@
     <section class="row">
       <div class="accordion" v-bind:class="theme">
         <div class="header" v-on:click="toggle">
-          <slot name="header">Smoothie name</slot>
-          <i class="icon-heart" v-bind:class="{ rotate: show }"></i>
+          <slot>Smoothie name</slot>
+          <slot>
+            <eva-icon
+              class="smooth-icon"
+              name="heart"
+              animation="pulse"
+              fill="limegreen"
+            ></eva-icon>
+            <label class="label" for="heart">25</label>
+
+            <eva-icon
+              class="smooth-icon"
+              name="droplet"
+              animation="pulse"
+              fill="tomato"
+            ></eva-icon>
+            <label class="label" for="droplet">85%</label>
+          </slot>
         </div>
         <transition
           name="accordion"
@@ -15,7 +31,9 @@
         >
           <div class="body" v-show="show">
             <div class="body-inner">
-              <slot># banana fresa aguacate</slot>
+              <p># banana fresa aguacate</p>
+              <p># Water</p>
+              <p># V.Protein</p>
             </div>
           </div>
         </transition>
@@ -25,8 +43,12 @@
 </template>
 
 <script>
+import { EvaIcon } from "vue-eva-icons";
 export default {
   name: "Accordion",
+  components: {
+    [EvaIcon.name]: EvaIcon
+  },
   data() {
     return {
       show: false
@@ -65,6 +87,7 @@ export default {
 
   background-color: $dark-color;
   border-radius: 8px;
+  font-weight: 600;
 }
 
 .accordion .header {
@@ -74,6 +97,8 @@ export default {
   position: relative;
   color: $white;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 
 .accordion .header-icon {
@@ -92,14 +117,12 @@ export default {
   border-top: 0;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-	transition: 150ms ease-out;
-	color: $white;
+  transition: 150ms ease-out;
+  color: $white;
 }
 
 .accordion .body-inner {
   padding: 8px;
-  overflow-wrap: break-word;
-  /*   white-space: pre-wrap; */
 }
 
 .accordion .header-icon.rotate {
@@ -113,5 +136,13 @@ export default {
 
 .accordion.purple .body {
   border-color: #8c618d;
+}
+
+.smooth-icon {
+  font-size: 1.8em;
+}
+
+.label {
+  margin-left: -1.5em;
 }
 </style>
