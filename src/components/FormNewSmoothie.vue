@@ -1,16 +1,22 @@
 <template>
   <div class="container">
     <div class="row">
-      <form action="">
+      <form action>
         <label for="smoothie-name">Smoothie name:</label>
         <input type="text" name="smoothie-name" id="smoothie-name" />
 
-        <label for="smoothie-fruits">Fruits:</label>
-        <select name="smoothie-fruits" id="smoothie-fruits">
-          <option value="pina">Piña</option>
-          <option value="fresa">Fresa</option>
-          <option value="manzana">Manzana</option>
-        </select>
+        <div class="select-fruit">
+          <label for="smoothie-fruits">Fruits:</label>
+          <select class="select-fruit__select" name="smoothie-fruits" id="smoothie-fruits">
+            <option value="pina">Piña</option>
+            <option value="fresa">Fresa</option>
+            <option value="manzana">Manzana</option>
+          </select>
+
+          <button class="button button--plus">
+            +
+          </button>
+        </div>
 
         <label for="smoothie-liquid">Liquid:</label>
         <select name="smoothie-liquid" id="smoothie-liquid">
@@ -25,13 +31,9 @@
         </select>
 
         <label for="smoothie-taste">Taste:</label>
-        <input type="number" name="smoothie-taste" id="smoothie-taste" />
+        <input class="input-taste" type="number" name="smoothie-taste" id="smoothie-taste" />
 
-        <input
-          class="button button-large submit mx-auto"
-          type="submit"
-          value="Save it!"
-        />
+        <input class="button button-large submit mx-auto" type="submit" value="Save it!" />
       </form>
     </div>
   </div>
@@ -39,7 +41,7 @@
 
 <script>
 export default {
-  name: "FormNewSmoothie",
+  name: "FormNewSmoothie"
 };
 </script>
 
@@ -48,10 +50,20 @@ form {
   margin: auto;
   padding: 2rem;
   border-radius: 0.8rem;
-  background: $white;
+  background: $light-color;
   .submit {
     background: $dark-color;
     width: 100%;
+  }
+  .select-fruit {
+    &__select{
+    width: 60%;
+    margin-right: 10px;
+    }
+  }
+
+  .input-taste{
+    width: 30%;
   }
 }
 </style>

@@ -1,11 +1,7 @@
 <template>
   <div>
     <BackButton />
-    <div class="container">
-    <section class="row">
-      <BrandHeader />
-    </section>
-    </div>
+    <BrandHeader />
     <FormNewSmoothie />
   </div>
 </template>
@@ -20,8 +16,8 @@ export default {
   components: {
     BrandHeader,
     BackButton,
-    FormNewSmoothie,
-  },
+    FormNewSmoothie
+  }
 };
 </script>
 

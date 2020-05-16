@@ -1,13 +1,17 @@
 <template>
-  <div class="brand-content">
-    <img class="brand-logo" src="smoothie-logo.png" alt="smoothie-logo" />
-    <h1 class="title">Smoothie Match</h1>
+  <div class="container">
+    <section class="row">
+      <div class="brand-content">
+        <img class="brand-logo" src="smoothie-logo.png" alt="smoothie-logo" />
+        <h1 class="title">Smoothie Match</h1>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 export default {
-  name: "BrandHeader",
+  name: "BrandHeader"
 };
 </script>
 
@@ -18,7 +22,7 @@ export default {
   align-items: center;
   flex-direction: column;
   width: 100%;
-  margin: 3em auto 2em;
+  margin: 4em auto 2em;
   background-color: #5b5656;
   border-radius: 15px;
   box-shadow: 0 10px 15px #c0ffb3;

@@ -2,12 +2,16 @@
   <div>
     <BackButton />
     <BrandHeader />
-    <p>
-      Smoothies for all Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Neque laudantium ut quod distinctio id amet, voluptate odit? Quae ratione
-      exercitationem nemo inventore voluptatum dicta quam dolorem dolor eveniet
-      delectus. Eius.
-    </p>
+    <div class="container">
+      <section class="row">
+        <p>
+          Smoothies for all Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Neque laudantium ut quod distinctio id amet, voluptate odit?
+          Quae ratione exercitationem nemo inventore voluptatum dicta quam
+          dolorem dolor eveniet delectus. Eius.
+        </p>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -19,8 +23,8 @@ export default {
   name: "Smoothies",
   components: {
     BrandHeader,
-    BackButton,
-  },
+    BackButton
+  }
 };
 </script>
 

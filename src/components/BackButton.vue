@@ -6,14 +6,14 @@
 
 <script>
 export default {
-  name: "BackButton",
+  name: "BackButton"
 };
 </script>
 
 <style lang="scss">
 .arrow-back {
+  position: absolute;
   width: 2em;
-  margin: 1em 0 -1.68em -1.5em;
   z-index: 10;
   padding: 5px 8px;
   border: 3px solid #ffd369;
