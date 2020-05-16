@@ -1,7 +1,11 @@
 <template>
   <div>
     <BackButton />
-    <BrandHeader />
+    <div class="container">
+    <section class="row">
+      <BrandHeader />
+    </section>
+    </div>
     <FormNewSmoothie />
   </div>
 </template>

@@ -17,8 +17,8 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 80vw;
-  margin: 1em auto 2em;
+  width: 100%;
+  margin: 3em auto 2em;
   background-color: #5b5656;
   border-radius: 15px;
   box-shadow: 0 10px 15px #c0ffb3;
