@@ -74,7 +74,7 @@ export default {
   methods: {
     getSmoothies() {
       axios
-        .get("http://localhost:3000/smoothies/")
+        .get(""https://smoothie-api1.herokuapp.com/smoothies/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;

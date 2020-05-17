@@ -123,7 +123,7 @@ export default {
     },
     getSmoothies() {
       axios
-        .get("http://localhost:3000/smoothies/")
+        .get(""https://smoothie-api1.herokuapp.com/smoothies/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -136,7 +136,7 @@ export default {
     },
     getLiquids() {
       axios
-        .get("http://localhost:3000/liquids/")
+        .get(""https://smoothie-api1.herokuapp.com/liquids/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -149,7 +149,7 @@ export default {
     },
     getProteins() {
       axios
-        .get("http://localhost:3000/proteins/")
+        .get(""https://smoothie-api1.herokuapp.com/proteins/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -162,7 +162,7 @@ export default {
     },
     getFruits() {
       axios
-        .get("http://localhost:3000/fruits/")
+        .get(""https://smoothie-api1.herokuapp.com/fruits/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -210,7 +210,7 @@ export default {
 
       console.info(newSmoothie);
       axios
-        .post("http://localhost:3000/smoothies/", newSmoothie)
+        .post(""https://smoothie-api1.herokuapp.com/smoothies/", newSmoothie)
         .then(result => console.info(result));
 
       this.smoothieNameModel = null;
