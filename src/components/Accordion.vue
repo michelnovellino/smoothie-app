@@ -1,26 +1,25 @@
 <template>
   <div class="container container-accordion">
     <section class="row">
-      <div class="accordion" v-bind:class="theme">
-        <div class="header" v-on:click="toggle">
-          <slot>Smoothie name</slot>
-          <slot>
+      <div class="accordion" v-for="smoothie in smoothies" :key="smoothie._id">
+        <div class="header" @click="toggle">
+          <eva-icon
+              class="smooth-icon"
+              name="droplet"
+              animation="pulse"
+              fill="tomato"
+            ></eva-icon>
+            <label class="label" for="droplet">{{ smoothie.tastes }}%</label>
+          <div class="header-title">
+            {{ smoothie.title }}
+          </div>
+          <label class="label" for="heart"> 22 </label>
             <eva-icon
               class="smooth-icon"
               name="heart"
               animation="pulse"
               fill="limegreen"
             ></eva-icon>
-            <label class="label" for="heart">25</label>
-
-            <eva-icon
-              class="smooth-icon"
-              name="droplet"
-              animation="pulse"
-              fill="tomato"
-            ></eva-icon>
-            <label class="label" for="droplet">85%</label>
-          </slot>
         </div>
         <transition
           name="accordion"
@@ -31,9 +30,14 @@
         >
           <div class="body" v-show="show">
             <div class="body-inner">
-              <p># banana fresa aguacate</p>
-              <p># Water</p>
-              <p># V.Protein</p>
+              <p>Fruits:</p>
+              <p v-for="fruit in smoothie.fruits" :key="fruit._id">
+                {{ fruit.name }}
+              </p>
+              <p>Liquid:</p>
+              <p>{{ smoothie.liquids }}</p>
+              <p>Proteins:</p>
+              <p>{{ smoothie.proteins }}</p>
             </div>
           </div>
         </transition>
@@ -44,26 +48,38 @@
 
 <script>
 import { EvaIcon } from "vue-eva-icons";
+import axios from "axios";
 export default {
   name: "Accordion",
   components: {
     [EvaIcon.name]: EvaIcon
   },
-  data() {
-    return {
-      show: false
-    };
+  data: () => ({
+    show: false,
+    smoothies: []
+  }),
+  created() {
+    this.getSmoothies();
   },
   methods: {
+    getSmoothies() {
+      axios
+        .get("http://localhost:3000/smoothies/")
+        .then(resp => {
+          if (resp.status === 200) {
+            //this.listas = resp.data;
+            this.smoothies = resp.data;
+            console.info(this.smoothies);
+          }
+        })
+        .catch(e => {
+          console.error(e);
+        });
+    },
+
     toggle: function() {
       this.show = !this.show;
     },
-    // enter: function(el, done) {
-    //   $(el).slideDown(150, done);
-    // },
-    // leave: function(el, done) {
-    //   $(el).slideUp(150, done);
-    // },
     beforeEnter: function(el) {
       el.style.height = "0";
     },
@@ -87,13 +103,13 @@ export default {
 
   background-color: $dark-color;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .accordion .header {
   height: 40px;
   line-height: 40px;
-  padding: 0 40px 0 8px;
+  padding: 0 0.5em;
   position: relative;
   color: $white;
   cursor: pointer;
@@ -139,10 +155,13 @@ export default {
 }
 
 .smooth-icon {
-  font-size: 1.8em;
+  font-size: 2em;
 }
 
-.label {
-  margin-left: -1.5em;
+
+.header-title {
+  width: 59%;
+  text-align: center;
 }
+
 </style>

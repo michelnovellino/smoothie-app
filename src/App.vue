@@ -25,5 +25,4 @@ export default class App extends Vue {}
   color: $white;
   border: none;
 }
-
 </style>
