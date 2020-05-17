@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container ">
     <div class="row">
       <form @submit="saveSmoothie">
         <label for="smoothie-name">Smoothie name:</label>
@@ -18,15 +18,32 @@
             name="smoothie-fruits"
             id="smoothie-fruits"
           >
-            <option
-              v-for="fruit in fruits"
-              :value="fruit._id"
-              :key="fruit._id"
-              >{{ fruit.name }}</option
-            >
+            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">{{
+              fruit.name
+            }}</option>
           </select>
 
-          <button class="button button--plus">+</button>
+          <button class="button button--plus" @click="addFruit(fruitsModel)">
+            +
+          </button>
+        </div>
+        <div class="dropdown ">
+          <div v-if="selectedFruits.length > 0" class="fruits">
+            ver frutas
+            <eva-icon class="ml-2" name="eye"></eva-icon>
+          </div>
+          <div class="dropdown-content">
+            <transition-group name="list-complete" tag="p">
+              <p
+                class="list-complete-item"
+                v-for="(fruit, index) in selectedFruits"
+                :key="index"
+              >
+                {{ fruit.name }}
+                <span class="remove" @click="Remove(index)">x</span>
+              </p>
+            </transition-group>
+          </div>
         </div>
 
         <label for="smoothie-liquid">Liquid:</label>
@@ -93,78 +110,79 @@ import axios from "axios";
 export default {
   name: "FormNewSmoothie",
   components: {
-    [EvaIcon.name]: EvaIcon
+    [EvaIcon.name]: EvaIcon,
   },
   data: () => ({
-    smoothieNameModel: null,
-    fruitsModel: [],
-    liquidModel: null,
-    proteinModel: null,
-    tasteModel: null,
-    liquids: null,
-    proteins: null,
-    fruits: null
+    smoothieNameModel: "",
+    fruitsModel: "",
+    selectedFruits: [],
+    liquidModel: "",
+    proteinModel: "",
+    tasteModel: "",
+    liquids: "",
+    proteins: "",
+    fruits: "",
   }),
   created() {
-    this.getSmoothies();
+    //this.getSmoothies();
     this.getLiquids();
     this.getProteins();
     this.getFruits();
   },
   methods: {
+    addFruit(val) {
+      if (!val) return;
+      this.selectedFruits.push(val);
+    },
     getSmoothies() {
       axios
         .get("http://localhost:3000/smoothies/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.smoothies = resp.data;
-            console.info(resp.data);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
     getLiquids() {
       axios
         .get("http://localhost:3000/liquids/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.liquids = resp.data;
-            console.info(resp.data);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
     getProteins() {
       axios
         .get("http://localhost:3000/proteins/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.proteins = resp.data;
-            console.info(resp.data);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
     getFruits() {
       axios
         .get("http://localhost:3000/fruits/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.fruits = resp.data;
-            console.info(resp.data);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
@@ -172,37 +190,36 @@ export default {
       e.preventDefault();
       const newSmoothie = {
         title: this.smoothieNameModel,
-        fruits: this.fruitsModel,
+        fruits: this.selectedFruits,
         proteins: this.proteinModel,
         liquids: this.liquidModel,
-        tastes: this.tasteModel
+        tastes: this.tasteModel,
       };
-      // console.info(this.smoothieNameModel);
-      // console.info(this.liquidModel);
-      // console.info(this.proteinModel);
-      // console.info(this.fruitsModel);
-      // console.info(this.tasteModel);
-
       axios
         .post("http://localhost:3000/smoothies/", newSmoothie)
-        .then(result => console.info(result));
+        .then((result) => console.info(result));
 
       this.smoothieNameModel = null;
       this.fruitsModel = null;
       this.proteinModel = null;
       this.liquidModel = null;
       this.tasteModel = null;
-    }
-  }
+    },
+    Remove(e) {
+      if (!Number.isInteger(e)) return;
+      this.selectedFruits.splice(e, 1);
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 form {
+  max-width: 100%;
   margin: auto;
+  background: $light-color;
   padding: 2rem;
   border-radius: 0.8rem;
-  background: $light-color;
   .submit {
     background: $dark-color;
     width: 100%;
@@ -225,6 +242,19 @@ form {
     .droplet-icon {
       margin-bottom: -1em;
     }
+  }
+  .list-complete-item {
+    transition: all 1s;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .list-complete-enter, .list-complete-leave-to
+/* .list-complete-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .list-complete-leave-active {
+    position: absolute;
   }
 }
 </style>
