@@ -4,22 +4,20 @@
       <div class="accordion" v-for="smoothie in smoothies" :key="smoothie._id">
         <div class="header" @click="toggle">
           <eva-icon
-              class="smooth-icon"
-              name="droplet"
-              animation="pulse"
-              fill="tomato"
-            ></eva-icon>
-            <label class="label" for="droplet">{{ smoothie.tastes }}%</label>
-          <div class="header-title">
-            {{ smoothie.title }}
-          </div>
-          <label class="label" for="heart"> 22 </label>
-            <eva-icon
-              class="smooth-icon"
-              name="heart"
-              animation="pulse"
-              fill="limegreen"
-            ></eva-icon>
+            class="smooth-icon"
+            name="droplet"
+            animation="pulse"
+            fill="tomato"
+          ></eva-icon>
+          <label class="label" for="droplet">{{ smoothie.tastes }}%</label>
+          <div class="header-title">{{ smoothie.title }}</div>
+          <label class="label" for="heart">{{ totalValue }}</label>
+          <eva-icon
+            class="smooth-icon"
+            name="heart"
+            animation="pulse"
+            fill="limegreen"
+          ></eva-icon>
         </div>
         <transition
           name="accordion"
@@ -35,9 +33,9 @@
                 {{ fruit.name }}
               </p>
               <p>Liquid:</p>
-              <p>{{ smoothie.liquids }}</p>
+              <p>{{ liquid.name }}</p>
               <p>Proteins:</p>
-              <p>{{ smoothie.proteins }}</p>
+              <p>{{ protein.name }}</p>
             </div>
           </div>
         </transition>
@@ -56,10 +54,26 @@ export default {
   },
   data: () => ({
     show: false,
-    smoothies: []
+    smoothies: [],
+    liquid: null,
+    fruits: [],
+    protein: null
   }),
   created() {
     this.getSmoothies();
+  },
+  computed: {
+    totalValue() {
+      const proteinValue = this.proteins;
+      const fruitsValue = this.fruits.map(({ value }) => {
+        let totalFruitValue = value;
+        totalFruitValue += totalFruitValue;
+        console.info(totalFruitValue);
+        return totalFruitValue;
+      });
+      console.info(proteinValue + fruitsValue);
+      return proteinValue + fruitsValue;
+    }
   },
   methods: {
     getSmoothies() {
@@ -70,13 +84,21 @@ export default {
             //this.listas = resp.data;
             this.smoothies = resp.data;
             console.info(this.smoothies);
+
+            this.smoothies.map(smoothie => {
+              const { liquids, fruits, proteins } = smoothie;
+              console.info(liquids, fruits, proteins);
+              this.liquid = liquids;
+              this.protein = proteins;
+              this.fruits = fruits;
+              console.info(this.liquid, this.protein, this.fruits);
+            });
           }
         })
         .catch(e => {
           console.error(e);
         });
     },
-
     toggle: function() {
       this.show = !this.show;
     },
@@ -158,10 +180,8 @@ export default {
   font-size: 2em;
 }
 
-
 .header-title {
   width: 59%;
   text-align: center;
 }
-
 </style>
