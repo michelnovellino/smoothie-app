@@ -2,7 +2,7 @@
   <div class="container container-accordion">
     <section class="row">
       <div class="accordion" v-for="smoothie in smoothies" :key="smoothie._id">
-        <div class="header" @click="toggle">
+        <div class="header" @click="toggle()">
           <eva-icon
             class="smooth-icon"
             name="droplet"
@@ -11,7 +11,9 @@
           ></eva-icon>
           <label class="label" for="droplet">{{ smoothie.tastes }}%</label>
           <div class="header-title">{{ smoothie.title }}</div>
-          <label class="label" for="heart">{{ totalValue }}</label>
+          <label class="label" for="heart">
+            {{ smoothie.totalFlavor }}
+          </label>
           <eva-icon
             class="smooth-icon"
             name="heart"
@@ -28,13 +30,13 @@
         >
           <div class="body" v-show="show">
             <div class="body-inner">
-              <p>Fruits:</p>
+              <p class="list-title">Fruits:</p>
               <p v-for="fruit in smoothie.fruits" :key="fruit._id">
                 {{ fruit.name }}
               </p>
-              <p>Liquid:</p>
+              <p class="list-title">Liquid:</p>
               <p>{{ liquid.name }}</p>
-              <p>Proteins:</p>
+              <p class="list-title">Proteins:</p>
               <p>{{ protein.name }}</p>
             </div>
           </div>
@@ -55,24 +57,18 @@ export default {
   data: () => ({
     show: false,
     smoothies: [],
-    liquid: null,
+    liquid: "",
     fruits: [],
-    protein: null
+    protein: "",
+    totalFlavor: []
   }),
   created() {
     this.getSmoothies();
   },
   computed: {
     totalValue() {
-      const proteinValue = this.proteins;
-      const fruitsValue = this.fruits.map(({ value }) => {
-        let totalFruitValue = value;
-        totalFruitValue += totalFruitValue;
-        console.info(totalFruitValue);
-        return totalFruitValue;
-      });
-      console.info(proteinValue + fruitsValue);
-      return proteinValue + fruitsValue;
+      console.info("");
+      return "";
     }
   },
   methods: {
@@ -82,16 +78,24 @@ export default {
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
-            this.smoothies = resp.data;
-            console.info(this.smoothies);
-
-            this.smoothies.map(smoothie => {
+            this.smoothies = resp.data.map(smoothie => {
               const { liquids, fruits, proteins } = smoothie;
-              console.info(liquids, fruits, proteins);
               this.liquid = liquids;
               this.protein = proteins;
               this.fruits = fruits;
-              console.info(this.liquid, this.protein, this.fruits);
+
+              const fruitValuesArray = fruits.map(fruit => {
+                return fruit.value;
+              });
+              const totalFruitValue = fruitValuesArray.reduce(
+                (acc, value) => acc + value
+              );
+              const liquidValue = liquids.value;
+              const totalFlavor = totalFruitValue + liquidValue;
+
+              smoothie.totalFlavor = totalFlavor;
+
+              return smoothie;
             });
           }
         })
@@ -99,7 +103,7 @@ export default {
           console.error(e);
         });
     },
-    toggle: function() {
+    toggle: function(e) {
       this.show = !this.show;
     },
     beforeEnter: function(el) {
@@ -121,7 +125,7 @@ export default {
 <style lang="scss">
 .accordion {
   width: 90vw;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
 
   background-color: $dark-color;
   border-radius: 8px;
@@ -160,20 +164,7 @@ export default {
 }
 
 .accordion .body-inner {
-  padding: 8px;
-}
-
-.accordion .header-icon.rotate {
-  transform: rotate(180deg);
-  transition-duration: 0.3s;
-}
-
-.accordion.purple {
-  background-color: #8c618d;
-}
-
-.accordion.purple .body {
-  border-color: #8c618d;
+  padding: 0.5em;
 }
 
 .smooth-icon {
@@ -183,5 +174,17 @@ export default {
 .header-title {
   width: 59%;
   text-align: center;
+}
+
+p{
+  margin-bottom: 0.2em;
+}
+
+.list-title{
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: .1em;
+  color: $third-color;
+  font-size: 1.1em;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container ">
+  <div class="container">
     <div class="row">
       <form @submit="saveSmoothie">
         <label for="smoothie-name">Smoothie name:</label>
@@ -8,6 +8,7 @@
           type="text"
           name="smoothie-name"
           id="smoothie-name"
+          required
         />
 
         <div class="select-fruit">
@@ -17,28 +18,25 @@
             class="select-fruit__select"
             name="smoothie-fruits"
             id="smoothie-fruits"
+            required
           >
-            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">{{
+            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">
+              {{
               fruit.name
-            }}</option>
+              }}
+            </option>
           </select>
 
-          <button class="button button--plus" @click="addFruit(fruitsModel)">
-            +
-          </button>
+          <button class="button button--plus" @click="addFruit(fruitsModel)">+</button>
         </div>
-        <div class="dropdown ">
+        <div class="dropdown">
           <div v-if="selectedFruits.length > 0" class="fruits">
             ver frutas
             <eva-icon class="ml-2" name="eye"></eva-icon>
           </div>
           <div class="dropdown-content">
             <transition-group name="list-complete" tag="p">
-              <p
-                class="list-complete-item"
-                v-for="(fruit, index) in selectedFruits"
-                :key="index"
-              >
+              <p class="list-complete-item" v-for="(fruit, index) in selectedFruits" :key="index">
                 {{ fruit.name }}
                 <span class="remove" @click="Remove(index)">x</span>
               </p>
@@ -47,31 +45,17 @@
         </div>
 
         <label for="smoothie-liquid">Liquid:</label>
-        <select
-          v-model="liquidModel"
-          name="smoothie-liquid"
-          id="smoothie-liquid"
-        >
-          <option
-            v-for="liquid in liquids"
-            :value="liquid._id"
-            :key="liquid._id"
-            >{{ liquid.name }}</option
-          >
+        <select v-model="liquidModel" name="smoothie-liquid" id="smoothie-liquid" required>
+          <option v-for="liquid in liquids" :value="liquid._id" :key="liquid._id">{{ liquid.name }}</option>
         </select>
 
         <label for="smoothie-protein">Protein:</label>
-        <select
-          v-model="proteinModel"
-          name="smoothie-protein"
-          id="smoothie-protein"
-        >
+        <select v-model="proteinModel" name="smoothie-protein" id="smoothie-protein" required>
           <option
             v-for="protein in proteins"
             :value="protein._id"
             v-bind:key="protein._id"
-            >{{ protein.name }}</option
-          >
+          >{{ protein.name }}</option>
         </select>
 
         <div class="taste-container">
@@ -82,23 +66,22 @@
               type="number"
               name="smoothie-taste"
               id="smoothie-taste"
+              required
             />
           </div>
           <div class="droplet-icon">
-            <eva-icon
-              name="droplet"
-              width="40"
-              height="40"
-              animation="pulse"
-              fill="tomato"
-            ></eva-icon>
+            <eva-icon name="droplet" width="40" height="40" animation="pulse" fill="tomato"></eva-icon>
           </div>
         </div>
 
-        <button class="button button-large submit mx-auto" type="submit">
-          Save it!
-        </button>
+        <button class="button button-large submit mx-auto" type="submit">Save it!</button>
       </form>
+      <p v-if="errors.length">
+    <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+    <ul>
+      <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+    </ul>
+  </p>
     </div>
   </div>
 </template>
@@ -110,18 +93,22 @@ import axios from "axios";
 export default {
   name: "FormNewSmoothie",
   components: {
-    [EvaIcon.name]: EvaIcon,
+    [EvaIcon.name]: EvaIcon
   },
   data: () => ({
-    smoothieNameModel: "",
-    fruitsModel: "",
+    smoothieNameModel: null,
+    fruitsModel: null,
     selectedFruits: [],
-    liquidModel: "",
-    proteinModel: "",
-    tasteModel: "",
+    liquidModel: null,
+    proteinModel: null,
+    tasteModel: null,
     liquids: "",
     proteins: "",
     fruits: "",
+    totalFruitFlavor: "",
+    fruitsValues: [],
+    errors: [],
+    isEmpty: false
   }),
   created() {
     //this.getSmoothies();
@@ -137,79 +124,106 @@ export default {
     getSmoothies() {
       axios
         .get("http://localhost:3000/smoothies/")
-        .then((resp) => {
+        .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.smoothies = resp.data;
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e);
         });
     },
     getLiquids() {
       axios
         .get("http://localhost:3000/liquids/")
-        .then((resp) => {
+        .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.liquids = resp.data;
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e);
         });
     },
     getProteins() {
       axios
         .get("http://localhost:3000/proteins/")
-        .then((resp) => {
+        .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.proteins = resp.data;
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e);
         });
     },
     getFruits() {
       axios
         .get("http://localhost:3000/fruits/")
-        .then((resp) => {
+        .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.fruits = resp.data;
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e);
         });
     },
-    saveSmoothie(e) {
+    checkForm: function(e) {
+      if (
+        this.proteinsModel &&
+        this.liquidModel &&
+        this.selectedFruits &&
+        this.tasteModel &&
+        this.proteinModel
+      ) {
+        return true;
+      }
+
+      this.errors = [];
+
+      !this.smoothieNameModel && this.errors.push("Please fill Smoothie name");
+      !this.fruitsModel &&
+        this.errors.push("Please select at least 1 fruit for you smoothie");
+      !this.liquidNameModel &&
+        this.errors.push("Please select 1 Liquid for you smoothie");
+      !this.proteinModel &&
+        this.errors.push("Please select 1 Protein for you smoothie");
+      !this.tasteModel &&
+        this.errors.push("Put how much Taste have your smoothie.!");
+
       e.preventDefault();
+    },
+    saveSmoothie(e) {
+      e.preventDefault()
       const newSmoothie = {
         title: this.smoothieNameModel,
         fruits: this.selectedFruits,
         proteins: this.proteinModel,
         liquids: this.liquidModel,
-        tastes: this.tasteModel,
+        tastes: this.tasteModel
       };
+
+      console.info(newSmoothie);
       axios
         .post("http://localhost:3000/smoothies/", newSmoothie)
-        .then((result) => console.info(result));
+        .then(result => console.info(result));
 
       this.smoothieNameModel = null;
       this.fruitsModel = null;
-      this.proteinModel = null;
-      this.liquidModel = null;
-      this.tasteModel = null;
+      this.proteinModel = "";
+      this.liquidModel = "";
+      this.tasteModel = "";
     },
     Remove(e) {
       if (!Number.isInteger(e)) return;
       this.selectedFruits.splice(e, 1);
-    },
-  },
+    }
+  }
 };
 </script>
 

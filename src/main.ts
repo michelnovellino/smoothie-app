@@ -5,7 +5,6 @@ import EvaIcons from "vue-eva-icons";
 
 Vue.config.productionTip = false;
 Vue.use(EvaIcons);
-
 new Vue({
   router,
   render: h => h(App)
