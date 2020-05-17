@@ -10,6 +10,7 @@
           id="smoothie-name"
           required
         />
+        <div class="message">{{ validation.firstError("smoothieNameModel") }}</div>
 
         <div class="select-fruit">
           <label for="smoothie-fruits">Fruits:</label>
@@ -20,11 +21,7 @@
             id="smoothie-fruits"
             required
           >
-            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">
-              {{
-              fruit.name
-              }}
-            </option>
+            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">{{ fruit.name }}</option>
           </select>
 
           <button class="button button--plus" @click="addFruit(fruitsModel)">+</button>
@@ -76,12 +73,6 @@
 
         <button class="button button-large submit mx-auto" type="submit">Save it!</button>
       </form>
-      <p v-if="errors.length">
-    <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
-    <ul>
-      <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-    </ul>
-  </p>
     </div>
   </div>
 </template>
@@ -89,6 +80,8 @@
 <script>
 import { EvaIcon } from "vue-eva-icons";
 import axios from "axios";
+import SimpleVueValidation from "simple-vue-validator";
+const Validator = SimpleVueValidation.Validator;
 
 export default {
   name: "FormNewSmoothie",
@@ -106,15 +99,18 @@ export default {
     proteins: "",
     fruits: "",
     totalFruitFlavor: "",
-    fruitsValues: [],
-    errors: [],
-    isEmpty: false
+    fruitsValues: []
   }),
   created() {
     //this.getSmoothies();
     this.getLiquids();
     this.getProteins();
     this.getFruits();
+  },
+  validators: {
+    name: function(value) {
+      return Validator.value(value).required();
+    }
   },
   methods: {
     addFruit(val) {
@@ -199,19 +195,24 @@ export default {
       e.preventDefault();
     },
     saveSmoothie(e) {
-      e.preventDefault()
-      const newSmoothie = {
-        title: this.smoothieNameModel,
-        fruits: this.selectedFruits,
-        proteins: this.proteinModel,
-        liquids: this.liquidModel,
-        tastes: this.tasteModel
-      };
+      e.preventDefault();
 
-      console.info(newSmoothie);
-      axios
-        .post("http://localhost:3000/smoothies/", newSmoothie)
-        .then(result => console.info(result));
+      this.$validate().then(function(success) {
+        if (success) {
+          const newSmoothie = {
+            title: this.smoothieNameModel,
+            fruits: this.selectedFruits,
+            proteins: this.proteinModel,
+            liquids: this.liquidModel,
+            tastes: this.tasteModel
+          };
+
+          console.info(newSmoothie);
+          axios
+            .post("http://localhost:3000/smoothies/", newSmoothie)
+            .then(result => console.info(result));
+        }
+      });
 
       this.smoothieNameModel = null;
       this.fruitsModel = null;

@@ -173,6 +173,7 @@ export default {
 
 .header-title {
   width: 59%;
+  overflow: auto;
   text-align: center;
 }
 
@@ -180,10 +181,10 @@ p{
   margin-bottom: 0.2em;
 }
 
-.list-title{
+.list-title {
   font-weight: 600;
   margin-top: 1em;
-  margin-bottom: .1em;
+  margin-bottom: 0.1em;
   color: $third-color;
   font-size: 1.1em;
 }
