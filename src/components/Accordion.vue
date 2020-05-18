@@ -1,8 +1,12 @@
 <template>
   <div class="container container-accordion">
     <section class="row">
-      <div class="accordion" v-for="smoothie in smoothies" :key="smoothie._id">
-        <div class="header" @click="toggle()">
+      <div
+        class="accordion "
+        v-for="(smoothie, index) in smoothies"
+        :key="smoothie._id"
+      >
+        <div class="header" @click="toggle(index)">
           <eva-icon
             class="smooth-icon"
             name="droplet"
@@ -28,7 +32,7 @@
           v-on:before-leave="beforeLeave"
           v-on:leave="leave"
         >
-          <div class="body" v-show="show">
+          <div class="body" v-show="smoothies[index].show">
             <div class="body-inner">
               <p class="list-title">Fruits:</p>
               <p v-for="fruit in smoothie.fruits" :key="fruit._id">
@@ -69,22 +73,22 @@ export default {
     totalValue() {
       console.info("");
       return "";
-    }
+    },
   },
   methods: {
     getSmoothies() {
       axios
-        .get("http://localhost:3000/smoothies/")
-        .then(resp => {
+        .get("https://smoothie-api1.herokuapp.com/smoothies/")
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
-            this.smoothies = resp.data.map(smoothie => {
+            this.smoothies = resp.data.map((smoothie) => {
               const { liquids, fruits, proteins } = smoothie;
               this.liquid = liquids;
               this.protein = proteins;
               this.fruits = fruits;
 
-              const fruitValuesArray = fruits.map(fruit => {
+              const fruitValuesArray = fruits.map((fruit) => {
                 return fruit.value;
               });
               const totalFruitValue = fruitValuesArray.reduce(
@@ -92,19 +96,20 @@ export default {
               );
               const liquidValue = liquids.value;
               const totalFlavor = totalFruitValue + liquidValue;
-
+              smoothie.show = false;
               smoothie.totalFlavor = totalFlavor;
 
               return smoothie;
             });
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
-    toggle: function(e) {
-      this.show = !this.show;
+    toggle: function(i) {
+      console.log("toggle ", i);
+      this.smoothies[i].show = !this.smoothies[i].show;
     },
     beforeEnter: function(el) {
       el.style.height = "0";
@@ -117,8 +122,8 @@ export default {
     },
     leave: function(el) {
       el.style.height = "0";
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -177,7 +182,7 @@ export default {
   text-align: center;
 }
 
-p{
+p {
   margin-bottom: 0.2em;
 }
 

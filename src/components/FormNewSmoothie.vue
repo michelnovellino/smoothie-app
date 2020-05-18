@@ -10,7 +10,9 @@
           id="smoothie-name"
           required
         />
-        <div class="message">{{ validation.firstError("smoothieNameModel") }}</div>
+        <div class="message">
+          {{ validation.firstError("smoothieNameModel") }}
+        </div>
 
         <div class="select-fruit">
           <label for="smoothie-fruits">Fruits:</label>
@@ -21,10 +23,14 @@
             id="smoothie-fruits"
             required
           >
-            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">{{ fruit.name }}</option>
+            <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">
+              {{ fruit.name }}
+            </option>
           </select>
 
-          <button class="button button--plus" @click="addFruit(fruitsModel)">+</button>
+          <button class="button button--plus" @click="addFruit(fruitsModel)">
+            +
+          </button>
         </div>
         <div class="dropdown">
           <div v-if="selectedFruits.length > 0" class="fruits">
@@ -33,7 +39,11 @@
           </div>
           <div class="dropdown-content">
             <transition-group name="list-complete" tag="p">
-              <p class="list-complete-item" v-for="(fruit, index) in selectedFruits" :key="index">
+              <p
+                class="list-complete-item"
+                v-for="(fruit, index) in selectedFruits"
+                :key="index"
+              >
                 {{ fruit.name }}
                 <span class="remove" @click="Remove(index)">x</span>
               </p>
@@ -42,17 +52,33 @@
         </div>
 
         <label for="smoothie-liquid">Liquid:</label>
-        <select v-model="liquidModel" name="smoothie-liquid" id="smoothie-liquid" required>
-          <option v-for="liquid in liquids" :value="liquid._id" :key="liquid._id">{{ liquid.name }}</option>
+        <select
+          v-model="liquidModel"
+          name="smoothie-liquid"
+          id="smoothie-liquid"
+          required
+        >
+          <option
+            v-for="liquid in liquids"
+            :value="liquid._id"
+            :key="liquid._id"
+            >{{ liquid.name }}</option
+          >
         </select>
 
         <label for="smoothie-protein">Protein:</label>
-        <select v-model="proteinModel" name="smoothie-protein" id="smoothie-protein" required>
+        <select
+          v-model="proteinModel"
+          name="smoothie-protein"
+          id="smoothie-protein"
+          required
+        >
           <option
             v-for="protein in proteins"
             :value="protein._id"
             v-bind:key="protein._id"
-          >{{ protein.name }}</option>
+            >{{ protein.name }}</option
+          >
         </select>
 
         <div class="taste-container">
@@ -67,11 +93,19 @@
             />
           </div>
           <div class="droplet-icon">
-            <eva-icon name="droplet" width="40" height="40" animation="pulse" fill="tomato"></eva-icon>
+            <eva-icon
+              name="droplet"
+              width="40"
+              height="40"
+              animation="pulse"
+              fill="tomato"
+            ></eva-icon>
           </div>
         </div>
 
-        <button class="button button-large submit mx-auto" type="submit">Save it!</button>
+        <button class="button button-large submit mx-auto" type="submit">
+          Save it!
+        </button>
       </form>
     </div>
   </div>
@@ -108,7 +142,7 @@ export default {
     this.getFruits();
   },
   validators: {
-    name: function(value) {
+    smoothieNameModel: function(value) {
       return Validator.value(value).required();
     }
   },
@@ -119,7 +153,7 @@ export default {
     },
     getSmoothies() {
       axios
-        .get("http://localhost:3000/smoothies/")
+        .get("https://smoothie-api1.herokuapp.com/smoothies/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -132,7 +166,7 @@ export default {
     },
     getLiquids() {
       axios
-        .get("http://localhost:3000/liquids/")
+        .get("https://smoothie-api1.herokuapp.com/liquids/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -145,7 +179,7 @@ export default {
     },
     getProteins() {
       axios
-        .get("http://localhost:3000/proteins/")
+        .get("https://smoothie-api1.herokuapp.com/proteins/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -158,7 +192,7 @@ export default {
     },
     getFruits() {
       axios
-        .get("http://localhost:3000/fruits/")
+        .get("https://smoothie-api1.herokuapp.com/fruits/")
         .then(resp => {
           if (resp.status === 200) {
             //this.listas = resp.data;
@@ -195,8 +229,6 @@ export default {
       e.preventDefault();
     },
     saveSmoothie(e) {
-      e.preventDefault();
-
       this.$validate().then(function(success) {
         if (success) {
           const newSmoothie = {
@@ -209,10 +241,11 @@ export default {
 
           console.info(newSmoothie);
           axios
-            .post("http://localhost:3000/smoothies/", newSmoothie)
+            .post("https://smoothie-api1.herokuapp.com/smoothies/", newSmoothie)
             .then(result => console.info(result));
         }
       });
+      //e.preventDefault();
 
       this.smoothieNameModel = null;
       this.fruitsModel = null;
