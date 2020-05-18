@@ -150,7 +150,6 @@ export default {
     smoothieNameModel: function(value) {
       return Validator.value(value)
         .required()
-        .length(10);
     },
     tasteModel: function(value) {
       if (value > 100) {
