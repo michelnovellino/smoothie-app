@@ -25,12 +25,13 @@
               {{ fruit.name }}
             </option>
           </select>
-          <div class="message">
-            {{ validation.firstError("selectedFruits") }}
-          </div>
+
           <button class="button button--plus" @click="addFruit(fruitsModel)">
             +
           </button>
+        </div>
+        <div class="message">
+          {{ validation.firstError("selectedFruits") }}
         </div>
         <div class="dropdown">
           <div v-if="selectedFruits.length > 0" class="fruits">
@@ -254,7 +255,7 @@ export default {
       e.preventDefault();
     },
     saveSmoothie(e) {
-      e.preventDefault()
+      e.preventDefault();
       this.$validate().then(function(success) {
         if (success) {
           const newSmoothie = {
