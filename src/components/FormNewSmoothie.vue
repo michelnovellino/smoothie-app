@@ -119,6 +119,7 @@
 import { EvaIcon } from "vue-eva-icons";
 import axios from "axios";
 import SimpleVueValidation from "simple-vue-validator";
+import router from "../router";
 const Validator = SimpleVueValidation.Validator;
 
 export default {
@@ -256,6 +257,7 @@ export default {
     },
     saveSmoothie(e) {
       e.preventDefault();
+
       this.$validate().then(function(success) {
         if (success) {
           const newSmoothie = {
@@ -269,7 +271,11 @@ export default {
           console.info(newSmoothie);
           axios
             .post("https://smoothie-api1.herokuapp.com/smoothies/", newSmoothie)
-            .then((result) => console.info(result));
+            .then((result) => {
+              alert("¡Batido creado!");
+              router.push({ path: "/" });
+              console.info(result);
+            });
         }
       });
       //e.preventDefault();
