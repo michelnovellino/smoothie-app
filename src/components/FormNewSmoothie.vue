@@ -261,11 +261,13 @@ export default {
     saveSmoothie(e) {
       e.preventDefault();
 
-      this.$validate().then(function(success) {
+      this.$validate().then((success) => {
         if (success) {
           const newSmoothie = {
             title: this.smoothieNameModel,
-            fruits: this.selectedFruits,
+            fruits: this.selectedFruits.map((el) => {
+              return el._id;
+            }),
             proteins: this.proteinModel,
             liquids: this.liquidModel,
             tastes: this.tasteModel,
@@ -283,11 +285,6 @@ export default {
       });
       //e.preventDefault();
 
-      this.smoothieNameModel = null;
-      this.fruitsModel = null;
-      this.proteinModel = "";
-      this.liquidModel = "";
-      this.tasteModel = "";
     },
     Remove(e) {
       if (!Number.isInteger(e)) return;
