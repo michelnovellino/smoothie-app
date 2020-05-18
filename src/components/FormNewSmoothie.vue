@@ -8,7 +8,6 @@
           type="text"
           name="smoothie-name"
           id="smoothie-name"
-          required
         />
         <div class="message">
           {{ validation.firstError("smoothieNameModel") }}
@@ -21,13 +20,14 @@
             class="select-fruit__select"
             name="smoothie-fruits"
             id="smoothie-fruits"
-            required
           >
             <option v-for="fruit in fruits" :value="fruit" :key="fruit._id">
               {{ fruit.name }}
             </option>
           </select>
-
+          <div class="message">
+            {{ validation.firstError("selectedFruits") }}
+          </div>
           <button class="button button--plus" @click="addFruit(fruitsModel)">
             +
           </button>
@@ -56,7 +56,6 @@
           v-model="liquidModel"
           name="smoothie-liquid"
           id="smoothie-liquid"
-          required
         >
           <option
             v-for="liquid in liquids"
@@ -65,13 +64,14 @@
             >{{ liquid.name }}</option
           >
         </select>
-
+        <div class="message">
+          {{ validation.firstError("liquidModel") }}
+        </div>
         <label for="smoothie-protein">Protein:</label>
         <select
           v-model="proteinModel"
           name="smoothie-protein"
           id="smoothie-protein"
-          required
         >
           <option
             v-for="protein in proteins"
@@ -80,7 +80,9 @@
             >{{ protein.name }}</option
           >
         </select>
-
+        <div class="message">
+          {{ validation.firstError("proteinModel") }}
+        </div>
         <div class="taste-container">
           <div class="input-taste">
             <label for="smoothie-taste">Taste:</label>
@@ -89,7 +91,6 @@
               type="number"
               name="smoothie-taste"
               id="smoothie-taste"
-              required
             />
           </div>
           <div class="droplet-icon">
@@ -102,7 +103,9 @@
             ></eva-icon>
           </div>
         </div>
-
+        <div class="message">
+          {{ validation.firstError("tasteModel") }}
+        </div>
         <button class="button button-large submit mx-auto" type="submit">
           Save it!
         </button>
@@ -120,7 +123,7 @@ const Validator = SimpleVueValidation.Validator;
 export default {
   name: "FormNewSmoothie",
   components: {
-    [EvaIcon.name]: EvaIcon
+    [EvaIcon.name]: EvaIcon,
   },
   data: () => ({
     smoothieNameModel: null,
@@ -133,7 +136,7 @@ export default {
     proteins: "",
     fruits: "",
     totalFruitFlavor: "",
-    fruitsValues: []
+    fruitsValues: [],
   }),
   created() {
     //this.getSmoothies();
@@ -143,8 +146,30 @@ export default {
   },
   validators: {
     smoothieNameModel: function(value) {
+      return Validator.value(value)
+        .required()
+        .length(10);
+    },
+    tasteModel: function(value) {
+      if (value > 100) {
+        return Validator.custom(function() {
+          return "smaller than 100";
+        });
+      }
+
+      return Validator.value(value)
+        .integer()
+        .required();
+    },
+    liquidModel: function(value) {
       return Validator.value(value).required();
-    }
+    },
+    proteinModel: function(value) {
+      return Validator.value(value).required();
+    },
+    selectedFruits: function(value) {
+      return Validator.value(value).required();
+    },
   },
   methods: {
     addFruit(val) {
@@ -154,52 +179,52 @@ export default {
     getSmoothies() {
       axios
         .get("https://smoothie-api1.herokuapp.com/smoothies/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.smoothies = resp.data;
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
     getLiquids() {
       axios
         .get("https://smoothie-api1.herokuapp.com/liquids/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.liquids = resp.data;
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
     getProteins() {
       axios
         .get("https://smoothie-api1.herokuapp.com/proteins/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.proteins = resp.data;
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
     getFruits() {
       axios
         .get("https://smoothie-api1.herokuapp.com/fruits/")
-        .then(resp => {
+        .then((resp) => {
           if (resp.status === 200) {
             //this.listas = resp.data;
             this.fruits = resp.data;
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
@@ -229,6 +254,7 @@ export default {
       e.preventDefault();
     },
     saveSmoothie(e) {
+      e.preventDefault()
       this.$validate().then(function(success) {
         if (success) {
           const newSmoothie = {
@@ -236,13 +262,13 @@ export default {
             fruits: this.selectedFruits,
             proteins: this.proteinModel,
             liquids: this.liquidModel,
-            tastes: this.tasteModel
+            tastes: this.tasteModel,
           };
 
           console.info(newSmoothie);
           axios
             .post("https://smoothie-api1.herokuapp.com/smoothies/", newSmoothie)
-            .then(result => console.info(result));
+            .then((result) => console.info(result));
         }
       });
       //e.preventDefault();
@@ -256,8 +282,8 @@ export default {
     Remove(e) {
       if (!Number.isInteger(e)) return;
       this.selectedFruits.splice(e, 1);
-    }
-  }
+    },
+  },
 };
 </script>
 
