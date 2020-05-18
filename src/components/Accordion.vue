@@ -2,7 +2,7 @@
   <div class="container container-accordion">
     <section class="row">
       <div
-        class="accordion "
+        class="accordion  "
         v-for="(smoothie, index) in smoothies"
         :key="smoothie._id"
       >
@@ -56,7 +56,7 @@ import axios from "axios";
 export default {
   name: "Accordion",
   components: {
-    [EvaIcon.name]: EvaIcon
+    [EvaIcon.name]: EvaIcon,
   },
   data: () => ({
     show: false,
@@ -64,7 +64,7 @@ export default {
     liquid: "",
     fruits: [],
     protein: "",
-    totalFlavor: []
+    totalFlavor: [],
   }),
   created() {
     this.getSmoothies();
@@ -128,10 +128,13 @@ export default {
 </script>
 
 <style lang="scss">
-.accordion {
-  width: 90vw;
-  margin-bottom: 1em;
+.container .row {
+  flex-flow: column;
 
+}
+.accordion {
+  width: 100%;
+  margin-bottom: 1em;
   background-color: $dark-color;
   border-radius: 8px;
   font-weight: 400;

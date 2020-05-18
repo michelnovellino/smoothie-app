@@ -1,6 +1,11 @@
 @import "./_utilities.scss";
 @import "./variables";
-
+  #app{
+    width:100%;
+  }
+  .container{
+    max-width: 50%;
+  }
 .fruits {
   display: flex;
   align-items: flex-start;
@@ -75,5 +80,8 @@
 @media (max-width: 80rem) {
   .arrow-back {
     margin: 1em 0 -1.68em 0.5em;
+  }
+  .container{
+    max-width: 100%;
   }
 }
