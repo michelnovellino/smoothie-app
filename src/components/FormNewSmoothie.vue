@@ -26,7 +26,11 @@
             </option>
           </select>
 
-          <button class="button button--plus" @click="addFruit(fruitsModel)">
+          <button
+            type="button"
+            class="button button--plus"
+            @click="addFruit(fruitsModel)"
+          >
             +
           </button>
         </div>
@@ -148,8 +152,7 @@ export default {
   },
   validators: {
     smoothieNameModel: function(value) {
-      return Validator.value(value)
-        .required()
+      return Validator.value(value).required();
     },
     tasteModel: function(value) {
       if (value > 100) {
@@ -176,6 +179,7 @@ export default {
     addFruit(val) {
       if (!val) return;
       this.selectedFruits.push(val);
+      this.fruitsModel = "";
     },
     getSmoothies() {
       axios
